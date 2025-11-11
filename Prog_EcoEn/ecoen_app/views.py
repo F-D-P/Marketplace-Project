@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from .models import Producto
 from django.contrib.auth.decorators import login_required
-
+from .models import Compra
 
 def index(request):
     opiniones = Opinion.objects.all().order_by('-fecha')  # últimas primero
@@ -64,6 +64,27 @@ def enviar_opinion(request):
 def carrito(request):
     mostrar_pago = request.GET.get("comprar") == "1"
     return render(request, "carrito.html", {"mostrar_pago": mostrar_pago})
+
+
+def confirmar_pago(request, metodo):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    # Simulación: guardar una compra ficticia
+    Compra.objects.create(
+        usuario=request.user,
+        metodo_pago=metodo,
+        total=calcular_total_carrito(request),  # función que suma los ítems
+        estado="simulado"
+    )
+
+    return redirect(f"/?confirmacion=1&metodo={metodo}")
+
+def calcular_total_carrito(request):
+    # Simulación: suma ficticia de ítems del carrito
+    # En producción, deberías sumar los precios reales desde sesión o base de datos
+    return 1000.00  # valor simulado en ARS
+
 
 
 def registro(request):

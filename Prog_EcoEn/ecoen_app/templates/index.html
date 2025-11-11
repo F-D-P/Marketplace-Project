@@ -288,14 +288,49 @@
         </form>
     </section>
 
-    <!-- Carrito -->
-    <section id="carrito" class="card">
-        <h2 class="text-center mb-4">🛒 Tu Carrito</h2>
-        <ul id="carrito-lista" class="list-group mb-3"></ul>
-        <p class="fw-bold">Total: <span id="carrito-total">0</span> ARS</p>
-        <button id="btn-comprar" class="btn btn-success w-100">Comprar</button>
-    </section>
+  <!-- 🛒 Carrito -->
+<section id="carrito" class="card shadow-sm p-4 mb-5 bg-body rounded">
+  <h2 class="text-center mb-4">🛒 Tu Carrito</h2>
 
+  <!-- Lista de productos -->
+  <ul id="carrito-lista" class="list-group mb-3">
+    <!-- Los ítems se insertan dinámicamente aquí -->
+  </ul>
+
+  <!-- Total -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <span class="fw-bold fs-5">Total:</span>
+    <span id="carrito-total" class="fw-bold fs-5 text-success">0 ARS</span>
+  </div>
+
+  <!-- Botón inicial -->
+  <button id="btn-comprar" class="btn btn-success w-100">Comprar</button>
+
+  <!-- Métodos de pago (ocultos al principio) -->
+  <div id="metodos-pago" class="d-none mt-4">
+    <h5 class="mt-3">Seleccioná un método de pago:</h5>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="metodoPago" id="pagoMP" value="mercado_pago">
+      <label class="form-check-label" for="pagoMP">Mercado Pago (Simulado)</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="metodoPago" id="pagoTransferencia" value="transferencia">
+      <label class="form-check-label" for="pagoTransferencia">Transferencia Bancaria</label>
+    </div>
+
+    <!-- Datos bancarios simulados -->
+    <div id="datos-transferencia" class="mt-3 d-none">
+      <p><strong>Banco:</strong> Banco Nación</p>
+      <p><strong>CBU:</strong> 01105999xxxxxxxxxxxx</p>
+      <p><strong>Alias:</strong> ecoen.pagos</p>
+      <p><strong>CUIT:</strong> 20-xxxxxxxx-x</p>
+      <p class="text-muted">Enviá tu comprobante por email o súbelo en tu perfil.</p>
+    </div>
+
+    <!-- Confirmar compra -->
+    <button id="btn-confirmar" class="btn btn-primary w-100 mt-3">Confirmar compra</button>
+  </div>
+</section>
 
 
 
