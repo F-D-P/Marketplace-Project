@@ -62,10 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("theme", "light");
     }
   });
-});
 
-// === CARRITO DE COMPRAS ===
-document.addEventListener("DOMContentLoaded", () => {
+  // === CARRITO DE COMPRAS ===
   const carritoLista = document.getElementById("carrito-lista");
   const carritoTotal = document.getElementById("carrito-total");
   const monedaSelect = document.getElementById("moneda");
@@ -95,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       carritoLista.appendChild(li);
     });
 
-    const moneda = monedaSelect.value;
+    const moneda = monedaSelect?.value || "ARS";
     const totalConvertido = totalUSD * tasaCambio[moneda];
     carritoTotal.textContent = totalConvertido.toFixed(2) + " " + moneda;
   }
@@ -115,6 +113,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   monedaSelect?.addEventListener("change", actualizarCarrito);
+
+  // === MÉTODOS DE PAGO ===
+  const btnComprar = document.getElementById("btn-comprar");
+  const metodosPago = document.getElementById("metodos-pago");
+  const datosTransferencia = document.getElementById("datos-transferencia");
+
+  btnComprar?.addEventListener("click", () => {
+    if (carritoLista.children.length === 0) {
+      alert("Tu carrito está vacío.");
+      return;
+    }
+    metodosPago.classList.remove("d-none");
+  });
+
+  window.simularMercadoPago = function () {
+    window.location.href = "/confirmar-pago/mercado_pago/";
+  };
+
+  window.mostrarTransferencia = function () {
+    datosTransferencia.classList.remove("d-none");
+  };
 });
 
 // === MENÚ LATERAL ===
@@ -130,3 +149,40 @@ function toggleMenu() {
     icon.textContent = icon.dataset.default || "☰";
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".rating").forEach((ratingBlock) => {
+    const stars = ratingBlock.querySelectorAll(".star");
+    const productName = ratingBlock
+      .closest(".card-body")
+      ?.querySelector(".card-title")?.textContent;
+
+    stars.forEach((star, index) => {
+      star.addEventListener("click", () => {
+        const selectedValue = parseInt(star.dataset.value);
+
+        // Visualmente marcar las estrellas seleccionadas
+        stars.forEach((s, i) => {
+          s.classList.toggle("text-warning", i < selectedValue);
+        });
+
+        // Guardar en localStorage (puede adaptarse a backend)
+        if (productName) {
+          localStorage.setItem(`rating_${productName}`, selectedValue);
+          alert(
+            `Puntuaste "${productName}" con ${selectedValue} estrella${
+              selectedValue > 1 ? "s" : ""
+            } ⭐`
+          );
+        }
+      });
+
+      // Mostrar puntuación guardada al cargar
+      const savedRating = localStorage.getItem(`rating_${productName}`);
+      if (savedRating) {
+        stars.forEach((s, i) => {
+          s.classList.toggle("text-warning", i < parseInt(savedRating));
+        });
+      }
+    });
+  });
+});
